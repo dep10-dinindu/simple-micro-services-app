@@ -1,7 +1,9 @@
 import express from "express";
-import mysql from 'promise-mysql';
+import {datasource} from '../db/dbcp'
 
 export const router = express.Router();
+
+console.log(datasource);
 
 router.delete('/:isbn',(req,res)=>{
     res.send("<h1>Book is Deleted</h1>")
