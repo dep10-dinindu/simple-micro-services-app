@@ -3,12 +3,23 @@ import {datasource} from '../db/dbcp'
 
 export const router = express.Router();
 
-console.log(datasource);
+type Book= {
+    "isbn":string,
+    "title":string
+}
 
-router.delete('/:isbn',(req,res)=>{
-    res.send("<h1>Book is Deleted</h1>")
+router.delete('/:isbn',async (req,res)=>{
+    const result = await datasource.query('DELETE FROM book WHERE isbn=?', [req.params.isbn]);
+    res.sendStatus(result.affectedRows ? 204 : 404);
 });
 
-router.patch('/:isbn',(req,res)=>{
-    res.send("<h1>Book is Updated</h1>")
+router.patch('/:isbn',async (req,res)=>{
+    const book:Book=req.body as Book;
+
+    if(!book.title?.trim()){
+        res.sendStatus(400);
+        return;
+    }
+    const result = await datasource.query("UPDATE book SET title=? WHERE isbn=?", [book.title, req.params.isbn],);
+    res.sendStatus(result.affectedRows ? 204 : 404);
 })

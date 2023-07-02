@@ -14,5 +14,5 @@ export let datasource: Pool;
         connectionLimit:+process.env.DB_CP_SIZE!
     });
 
-    console.log(datasource)
+
 })();
